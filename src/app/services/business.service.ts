@@ -26,4 +26,7 @@ export class BusinessService {
   deleteBusiness(business: Business): Observable<Business> {
     return this.http.delete<Business>(`${this.url}/businesses/${business.id}`);
   }
+  getSubtypes(): Observable<BusinessSubType[]> {
+    return this.http.get<BusinessSubType[]>(`${this.url}/business-subtypes/`);
+  }
 }

@@ -1,0 +1,39 @@
+<h2 mat-dialog-title>Agregar Comercio</h2>
+<form [formGroup]="businessForm" (ngSubmit)="onSubmit()">
+    <mat-dialog-content fxLayout="column" style="width: 400px;">
+
+        <mat-form-field>
+            <input matInput type="text" formControlName="name" placeholder="Nombre" />
+        </mat-form-field>
+
+        <mat-form-field>
+            <input matInput [matDatepicker]="picker" formControlName="date" placeholder="Fecha Fundación">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field>
+            <input matInput type="text" formControlName="ownerName" placeholder="Nombre del Dueño" />
+        </mat-form-field>
+
+        <mat-form-field>
+            <textarea matInput type="text" formControlName="address" placeholder="Dirección"></textarea>
+        </mat-form-field>
+
+        <!-- <mat-form-field appearance="fill">
+            <mat-select [formControl]="pokemonControl">
+                <mat-option>-- None --</mat-option>
+                <mat-optgroup *ngFor="let group of pokemonGroups" [label]="group.name" [disabled]="group.disabled">
+                    <mat-option *ngFor="let pokemon of group.pokemon" [value]="pokemon.value">
+                        {{pokemon.viewValue}}
+                    </mat-option>
+                </mat-optgroup>
+            </mat-select>
+        </mat-form-field> -->
+
+    </mat-dialog-content>
+    <mat-dialog-actions>
+        <button mat-button type="submit">Guardar</button>
+        <button mat-button [mat-dialog-close]="true">Cerrar</button>
+    </mat-dialog-actions>
+</form>
