@@ -11,7 +11,7 @@ import { BusinessSubType } from 'src/app/models/businesses';
 export class AddBusinessComponent implements OnInit {
 
   subtypes: BusinessSubType[];
-
+  businessForm: FormGroup;
   constructor(
     private businessService: BusinessService,
     private fb: FormBuilder,
@@ -21,6 +21,12 @@ export class AddBusinessComponent implements OnInit {
 
   ngOnInit() {
     this.getSubtypes();
+    this.businessForm = this.fb.group({
+      name: ['', Validators.required],
+      date: ['', Validators.required],
+      ownerName: ['', Validators.required],
+      address: ['', Validators.required]
+    });
   }
 
   getSubtypes(): void {
