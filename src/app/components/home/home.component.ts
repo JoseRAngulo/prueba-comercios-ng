@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { Business } from 'src/app/models/businesses';
 import { BusinessService } from 'src/app/services/business.service';
+import { AddBusinessComponent } from '../agregar/add-business/add-business.component';
 
 @Component({
   selector: 'app-home',
@@ -15,7 +17,8 @@ export class HomeComponent implements OnInit {
   displayedColumns: string[] = ['name', 'date', 'ownerName', 'address', 'types'];
 
   constructor(
-    private businessService: BusinessService
+    private businessService: BusinessService,
+    private businessDialog: MatDialog
   ) { }
 
   ngOnInit() {
@@ -28,6 +31,18 @@ export class HomeComponent implements OnInit {
         this.businesses = businesses;
         console.log(this.businesses);
         this.dataSource = new MatTableDataSource(this.businesses);
+      });
+  }
+
+  openBusinessDialog(event: Event): void {
+    event.stopPropagation();
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.autoFocus = true;
+    const businessRef = this.businessDialog.open(AddBusinessComponent, dialogConfig);
+    businessRef.afterClosed()
+      .subscribe(response => {
+        if (response && response.added) {
+        }
       });
   }
 }

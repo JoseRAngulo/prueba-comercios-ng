@@ -24,6 +24,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
     FormsModule,
     HttpClientModule
   ],
+  entryComponents: [AddBusinessComponent],
   providers: [],
   bootstrap: [AppComponent]
 })

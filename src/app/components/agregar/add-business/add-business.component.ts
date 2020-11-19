@@ -15,7 +15,7 @@ export class AddBusinessComponent implements OnInit {
   constructor(
     private businessService: BusinessService,
     private fb: FormBuilder,
-    private municipioDialog: MatDialog,
+    private businessDialog: MatDialog,
     public dialogRef: MatDialogRef<AddBusinessComponent>
   ) { }
 
