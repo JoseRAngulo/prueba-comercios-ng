@@ -47,6 +47,7 @@ export class HomeComponent implements OnInit {
           });
         });
         this.controls = this.fb.array(formGroups);
+        console.log(this.controls);
       });
   }
 
