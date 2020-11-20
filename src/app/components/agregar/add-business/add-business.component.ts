@@ -11,6 +11,7 @@ import { Business, BusinessSubType } from 'src/app/models/businesses';
 export class AddBusinessComponent implements OnInit {
   business: Business;
   subtypes: BusinessSubType[];
+  groupedSubtypes: BusinessSubType[][];
   businessForm: FormGroup;
   constructor(
     private businessService: BusinessService,
@@ -25,7 +26,8 @@ export class AddBusinessComponent implements OnInit {
       name: ['', Validators.required],
       date: ['', Validators.required],
       ownerName: ['', Validators.required],
-      address: ['', Validators.required]
+      address: ['', Validators.required],
+      types: ['', Validators.required]
     });
   }
 
@@ -36,7 +38,7 @@ export class AddBusinessComponent implements OnInit {
       date: this.businessForm.controls.date.value.toISOString().split('T')[0],
       owner_name: this.businessForm.controls.ownerName.value,
       address: this.businessForm.controls.address.value,
-      types: [1, 2]
+      types: this.businessForm.controls.types.value
     };
     this.addBusiness();
   }
@@ -45,13 +47,29 @@ export class AddBusinessComponent implements OnInit {
     this.businessService.getSubtypes()
       .subscribe(subtypes => {
         this.subtypes = subtypes;
+        this.groupedSubtypes = this.groupByType(this.subtypes);
       });
   }
 
   addBusiness(): void {
+    console.log(this.business);
     this.businessService.addBusiness(this.business)
       .subscribe(b => {
         console.log(b);
       });
+  }
+
+  groupByType(data: BusinessSubType[]): BusinessSubType[][] {
+    const grouped = data.reduce((storage, item) => {
+      const group = item.type;
+      storage[group] = storage[group] || [];
+      storage[group].push(item);
+      return storage;
+    }, {});
+    const arrayed = [];
+    Object.keys(grouped).forEach(key => {
+      arrayed.push(grouped[key]);
+    });
+    return arrayed;
   }
 }

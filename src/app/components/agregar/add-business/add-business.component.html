@@ -20,16 +20,15 @@
             <textarea matInput type="text" formControlName="address" placeholder="Dirección"></textarea>
         </mat-form-field>
 
-        <!-- <mat-form-field appearance="fill">
-            <mat-select [formControl]="pokemonControl">
-                <mat-option>-- None --</mat-option>
-                <mat-optgroup *ngFor="let group of pokemonGroups" [label]="group.name" [disabled]="group.disabled">
-                    <mat-option *ngFor="let pokemon of group.pokemon" [value]="pokemon.value">
-                        {{pokemon.viewValue}}
+        <mat-form-field appearance="fill">
+            <mat-select formControlName="types" multiple>
+                <mat-optgroup *ngFor="let group of groupedSubtypes" [label]="group[0].type">
+                    <mat-option *ngFor="let subtype of group" [value]="subtype.id">
+                        {{subtype.description}}
                     </mat-option>
                 </mat-optgroup>
             </mat-select>
-        </mat-form-field> -->
+        </mat-form-field>
 
     </mat-dialog-content>
     <mat-dialog-actions>

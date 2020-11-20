@@ -8,12 +8,18 @@ import { AppMaterialModule } from './app-material/app-material/app-material.modu
 import { AddBusinessComponent } from './components/agregar/add-business/add-business.component';
 import { HomeComponent } from './components/home/home.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { ViewModeDirective } from './directives/view-mode.directive';
+import { EditModeDirective } from './directives/edit-mode.directive';
+import { EditableComponent } from './components/editable/editable.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     AddBusinessComponent,
-    HomeComponent
+    HomeComponent,
+    ViewModeDirective,
+    EditModeDirective,
+    EditableComponent
   ],
   imports: [
     BrowserModule,
