@@ -19,6 +19,7 @@ export class HomeComponent implements OnInit {
   displayedColumns: string[] = ['name', 'date', 'ownerName', 'address', 'types', 'actions'];
   subtypes: BusinessSubType[];
   groupedSubtypes: BusinessSubType[][];
+  subtypeStrings: { [id: number]: string; } = {};
 
   constructor(
     private businessService: BusinessService,
@@ -28,7 +29,6 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
       this.getBusinesses();
-      this.getSubtypes();
   }
 
   getBusinesses(): void {
@@ -47,7 +47,7 @@ export class HomeComponent implements OnInit {
           });
         });
         this.controls = this.fb.array(formGroups);
-        console.log(this.controls);
+        this.getSubtypes();
       });
   }
 
@@ -55,6 +55,9 @@ export class HomeComponent implements OnInit {
     this.businessService.getSubtypes()
       .subscribe(subtypes => {
         this.subtypes = subtypes;
+        this.businesses.forEach(b => {
+          this.subtypeStrings[b.id] = this.verboseSubtype(b, subtypes);
+        });
         this.groupedSubtypes = this.groupByType(this.subtypes);
       });
   }
@@ -97,6 +100,12 @@ export class HomeComponent implements OnInit {
     if (control.valid) {
       this.businesses = this.businesses.map((e, i) => {
         if (index === i) {
+          console.log(e);
+          e[field] = control.value;
+          if (field === 'date') {
+            e[field] = control.value.toISOString().split('T')[0];
+          }
+          this.businessService.editBusiness(e).subscribe();
           return {
             ...e,
             [field]: control.value
@@ -105,5 +114,11 @@ export class HomeComponent implements OnInit {
         return e;
       });
     }
+  }
+  subtypeIdToString(id: number, subtypes: BusinessSubType[]): string {
+      return subtypes.find(e => e.id === id).description;
+  }
+  verboseSubtype(business: Business, subtypes: BusinessSubType[]): string {
+      return business.types.map((v) => this.subtypeIdToString(v, subtypes)).join(', ');
   }
 }

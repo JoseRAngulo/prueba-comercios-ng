@@ -12,6 +12,7 @@ import { ViewModeDirective } from './directives/view-mode.directive';
 import { EditModeDirective } from './directives/edit-mode.directive';
 import { EditableComponent } from './components/editable/editable.component';
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -19,7 +20,7 @@ import { EditableComponent } from './components/editable/editable.component';
     HomeComponent,
     ViewModeDirective,
     EditModeDirective,
-    EditableComponent
+    EditableComponent,
   ],
   imports: [
     BrowserModule,
