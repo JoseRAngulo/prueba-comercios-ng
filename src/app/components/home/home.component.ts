@@ -14,7 +14,7 @@ export class HomeComponent implements OnInit {
 
   businesses: Business[];
   dataSource: MatTableDataSource<Business>;
-  displayedColumns: string[] = ['name', 'date', 'ownerName', 'address', 'types'];
+  displayedColumns: string[] = ['name', 'date', 'ownerName', 'address', 'types', 'actions'];
 
   constructor(
     private businessService: BusinessService,
@@ -35,7 +35,6 @@ export class HomeComponent implements OnInit {
   }
 
   openBusinessDialog(event: Event): void {
-    event.stopPropagation();
     const dialogConfig = new MatDialogConfig();
     dialogConfig.autoFocus = true;
     const businessRef = this.businessDialog.open(AddBusinessComponent, dialogConfig);
