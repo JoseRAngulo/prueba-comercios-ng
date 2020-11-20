@@ -8,7 +8,7 @@ export interface Business {
 }
 
 export interface BusinessSubType {
-    id: number;
+    id: string;
     description: string;
     type: number;
 }

@@ -45,8 +45,9 @@
                 <button mat-icon-button (click)="openBusinessDialog($event)" matTooltip="Editar el comercio">
                     <mat-icon>edit</mat-icon>
                 </button>
-                <button mat-icon-button (click)="openBusinessDialog($event)" matTooltip="Borrar el comercio">
+                <button mat-icon-button (click)="deleteBusiness(element.id)" matTooltip="Borrar el comercio">
                     <mat-icon>delete</mat-icon>
+                    {{element.id}}
                 </button>
             </td>
         </ng-container>

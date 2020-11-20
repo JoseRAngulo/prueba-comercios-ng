@@ -44,4 +44,8 @@ export class HomeComponent implements OnInit {
         }
       });
   }
+
+  deleteBusiness(id: number): void {
+    this.businessService.deleteBusiness(id).subscribe();
+  }
 }
