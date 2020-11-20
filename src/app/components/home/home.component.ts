@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
-import { Business } from 'src/app/models/businesses';
+import { Business, BusinessSubType } from 'src/app/models/businesses';
 import { BusinessService } from 'src/app/services/business.service';
 import { AddBusinessComponent } from '../agregar/add-business/add-business.component';
 
@@ -17,6 +17,8 @@ export class HomeComponent implements OnInit {
   businesses: Business[];
   dataSource: MatTableDataSource<Business>;
   displayedColumns: string[] = ['name', 'date', 'ownerName', 'address', 'types', 'actions'];
+  subtypes: BusinessSubType[];
+  groupedSubtypes: BusinessSubType[][];
 
   constructor(
     private businessService: BusinessService,
@@ -26,6 +28,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
       this.getBusinesses();
+      this.getSubtypes();
   }
 
   getBusinesses(): void {
@@ -46,6 +49,28 @@ export class HomeComponent implements OnInit {
         this.controls = this.fb.array(formGroups);
       });
   }
+
+  getSubtypes(): void {
+    this.businessService.getSubtypes()
+      .subscribe(subtypes => {
+        this.subtypes = subtypes;
+        this.groupedSubtypes = this.groupByType(this.subtypes);
+      });
+  }
+  groupByType(data: BusinessSubType[]): BusinessSubType[][] {
+    const grouped = data.reduce((storage, item) => {
+      const group = item.type;
+      storage[group] = storage[group] || [];
+      storage[group].push(item);
+      return storage;
+    }, {});
+    const arrayed = [];
+    Object.keys(grouped).forEach(key => {
+      arrayed.push(grouped[key]);
+    });
+    return arrayed;
+  }
+
 
   openBusinessDialog(event: Event): void {
     const dialogConfig = new MatDialogConfig();
