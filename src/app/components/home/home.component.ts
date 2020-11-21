@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { Business, BusinessSubType } from 'src/app/models/businesses';
 import { BusinessService } from 'src/app/services/business.service';
 import { AddBusinessComponent } from '../agregar/add-business/add-business.component';
@@ -12,7 +12,7 @@ import { AddBusinessComponent } from '../agregar/add-business/add-business.compo
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-
+  @ViewChild('matTable', {static : false}) matTable: MatTable<any>;
   controls: FormArray;
   businesses: Business[];
   dataSource: MatTableDataSource<Business>;
@@ -83,11 +83,18 @@ export class HomeComponent implements OnInit {
     businessRef.afterClosed()
       .subscribe(response => {
         if (response && response.added) {
+          this.businesses.push(response.added);
+          this.dataSource = new MatTableDataSource(this.businesses);
+          this.getSubtypes();
+          this.matTable.renderRows();
         }
       });
   }
 
   deleteBusiness(id: number): void {
+    this.businesses = this.businesses.filter(b => b.id !== id);
+    this.dataSource = new MatTableDataSource(this.businesses);
+    this.matTable.renderRows();
     this.businessService.deleteBusiness(id).subscribe();
   }
 
@@ -100,19 +107,17 @@ export class HomeComponent implements OnInit {
     if (control.valid) {
       this.businesses = this.businesses.map((e, i) => {
         if (index === i) {
-          console.log(e);
           e[field] = control.value;
           if (field === 'date') {
             e[field] = control.value.toISOString().split('T')[0];
           }
           this.businessService.editBusiness(e).subscribe();
-          return {
-            ...e,
-            [field]: control.value
-          };
+          return e;
         }
         return e;
       });
+      this.getSubtypes();
+      this.matTable.renderRows();
     }
   }
   subtypeIdToString(id: number, subtypes: BusinessSubType[]): string {

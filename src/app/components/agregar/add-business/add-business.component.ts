@@ -55,7 +55,8 @@ export class AddBusinessComponent implements OnInit {
     console.log(this.business);
     this.businessService.addBusiness(this.business)
       .subscribe(b => {
-        console.log(b);
+        this.business.id = b.id;
+        this.dialogRef.close({ added: this.business });
       });
   }
 
