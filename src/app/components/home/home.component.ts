@@ -16,7 +16,7 @@ export class HomeComponent implements OnInit {
   controls: FormArray;
   businesses: Business[];
   dataSource: MatTableDataSource<Business>;
-  displayedColumns: string[] = ['name', 'date', 'ownerName', 'address', 'types', 'actions'];
+  displayedColumns: string[] = ['name', 'date', 'owner_name', 'address', 'types', 'actions'];
   subtypes: BusinessSubType[];
   groupedSubtypes: BusinessSubType[][];
   subtypeStrings: { [id: number]: string; } = {};
@@ -41,7 +41,7 @@ export class HomeComponent implements OnInit {
           return this.fb.group({
             name: [business.name, Validators.required],
             date: [business.date, Validators.required],
-            ownerName: [business.owner_name, Validators.required],
+            owner_name: [business.owner_name, Validators.required],
             address: [business.address, Validators.required],
             types: [business.types, Validators.required]
           });

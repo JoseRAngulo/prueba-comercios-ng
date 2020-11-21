@@ -32,6 +32,7 @@ export class EditableComponent implements OnInit {
   }
 
   private get element() {
+    console.log(this.host.nativeElement);
     return this.host.nativeElement;
   }
 
@@ -43,8 +44,10 @@ export class EditableComponent implements OnInit {
       });
   }
   private editModeHandler() {
-    const clickOutside$ = fromEvent(document, 'click').pipe(
-      filter(({ target }) => this.element.contains(target) === false),
+    const clickOutside$ = fromEvent(document, 'dblclick').pipe(
+      filter((event) => {
+        return this.element.contains(event.target) === false;
+      }),
       take(1)
     );
 
@@ -54,5 +57,10 @@ export class EditableComponent implements OnInit {
       this.update.next();
       this.mode = 'view';
     });
+  }
+
+  toViewMode() {
+    this.update.next();
+    this.mode = 'view';
   }
 }

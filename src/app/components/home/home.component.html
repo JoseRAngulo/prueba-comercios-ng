@@ -16,7 +16,7 @@
                     <ng-template appViewMode>{{element.name}}</ng-template>
                     <ng-template appEditMode>
                         <mat-form-field>
-                            <input matInput [formControl]="getControl(index, 'name')">
+                            <input matInput [formControl]="getControl(index, 'name')" appEditableOnEnter>
                         </mat-form-field>
                     </ng-template>
                 </app-editable>
@@ -30,7 +30,7 @@
                     <ng-template appViewMode>{{element.date}}</ng-template>
                     <ng-template appEditMode>
                         <mat-form-field>
-                            <input matInput [matDatepicker]="picker" [formControl]="getControl(index, 'date')" placeholder="Fecha Fundación">
+                            <input matInput [matDatepicker]="picker" [formControl]="getControl(index, 'date')" placeholder="Fecha Fundación" appEditableOnEnter>
                             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                             <mat-datepicker #picker></mat-datepicker>
                         </mat-form-field>
@@ -40,14 +40,14 @@
         </ng-container>
 
         
-        <ng-container matColumnDef="ownerName">
+        <ng-container matColumnDef="owner_name">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre Dueño </th>
             <td mat-cell *matCellDef="let element; index as index"> 
-                <app-editable (update)="updateField(index, 'ownerName')">
+                <app-editable (update)="updateField(index, 'owner_name')">
                     <ng-template appViewMode>{{element.owner_name}}</ng-template>
                     <ng-template appEditMode>
                         <mat-form-field>
-                            <input matInput [formControl]="getControl(index, 'ownerName')">
+                            <input matInput [formControl]="getControl(index, 'owner_name')" appEditableOnEnter>
                         </mat-form-field>
                     </ng-template>
                 </app-editable>
@@ -62,7 +62,7 @@
                     <ng-template appViewMode>{{element.address}}</ng-template>
                     <ng-template appEditMode>
                         <mat-form-field>
-                            <input matInput [formControl]="getControl(index, 'address')">
+                            <input matInput [formControl]="getControl(index, 'address')" appEditableOnEnter>
                         </mat-form-field>
                     </ng-template>
                 </app-editable> 
@@ -77,9 +77,9 @@
                     <ng-template appViewMode>{{subtypeStrings[element.id]}}</ng-template>
                     <ng-template appEditMode>
                         <mat-form-field appearance="fill">
-                            <mat-select [formControl]="getControl(index, 'types')" multiple>
+                            <mat-select [formControl]="getControl(index, 'types')" multiple appEditableOnEnter>
                                 <mat-optgroup *ngFor="let group of groupedSubtypes" [label]="group[0].type">
-                                    <mat-option *ngFor="let subtype of group" [value]="subtype.id">
+                                    <mat-option *ngFor="let subtype of group" [value]="subtype.id" class="control">
                                         {{subtype.description}}
                                     </mat-option>
                                 </mat-optgroup>

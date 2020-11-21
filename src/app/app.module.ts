@@ -11,6 +11,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { ViewModeDirective } from './directives/view-mode.directive';
 import { EditModeDirective } from './directives/edit-mode.directive';
 import { EditableComponent } from './components/editable/editable.component';
+import { EditableOnEnterDirective } from './directives/editable-on-enter.directive';
 
 
 @NgModule({
@@ -21,6 +22,7 @@ import { EditableComponent } from './components/editable/editable.component';
     ViewModeDirective,
     EditModeDirective,
     EditableComponent,
+    EditableOnEnterDirective,
   ],
   imports: [
     BrowserModule,
