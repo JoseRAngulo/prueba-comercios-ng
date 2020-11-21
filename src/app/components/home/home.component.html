@@ -11,7 +11,7 @@
 
         <ng-container matColumnDef="name">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> <strong>Nombre</strong> </th>
-            <td mat-cell *matCellDef="let element; index as index">
+            <td mat-cell *matCellDef="let element; index as index" @fadeInOut>
                 <app-editable (update)="updateField(index, 'name')">
                     <ng-template appViewMode>{{element.name}}</ng-template>
                     <ng-template appEditMode>
@@ -25,7 +25,7 @@
 
         <ng-container matColumnDef="date">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha Fundación </th>
-            <td mat-cell *matCellDef="let element; index as index"> 
+            <td mat-cell *matCellDef="let element; index as index" @fadeInOut> 
                 <app-editable (update)="updateField(index, 'date')">
                     <ng-template appViewMode>{{element.date}}</ng-template>
                     <ng-template appEditMode>
@@ -42,7 +42,7 @@
         
         <ng-container matColumnDef="owner_name">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre Dueño </th>
-            <td mat-cell *matCellDef="let element; index as index"> 
+            <td mat-cell *matCellDef="let element; index as index" @fadeInOut> 
                 <app-editable (update)="updateField(index, 'owner_name')">
                     <ng-template appViewMode>{{element.owner_name}}</ng-template>
                     <ng-template appEditMode>
@@ -57,7 +57,7 @@
 
         <ng-container matColumnDef="address">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Dirección </th>
-            <td mat-cell *matCellDef="let element; index as index"> 
+            <td mat-cell *matCellDef="let element; index as index" @fadeInOut> 
                 <app-editable (update)="updateField(index, 'address')">
                     <ng-template appViewMode>{{element.address}}</ng-template>
                     <ng-template appEditMode>
@@ -72,7 +72,7 @@
 
         <ng-container matColumnDef="types">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Tipo </th>
-            <td mat-cell *matCellDef="let element; index as index"> 
+            <td mat-cell *matCellDef="let element; index as index" @fadeInOut> 
                 <app-editable (update)="updateField(index, 'types')">
                     <ng-template appViewMode>{{subtypeStrings[element.id]}}</ng-template>
                     <ng-template appEditMode>
@@ -92,7 +92,7 @@
 
         <ng-container matColumnDef="actions">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Acciones </th>
-            <td mat-cell *matCellDef="let element">
+            <td mat-cell *matCellDef="let element" @fadeInOut>
                 <button mat-icon-button (click)="deleteBusiness(element.id)" matTooltip="Borrar el comercio">
                     <mat-icon>delete</mat-icon>
                 </button>

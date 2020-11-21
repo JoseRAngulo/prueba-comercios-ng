@@ -1,3 +1,4 @@
+import { animate, style, transition, trigger } from '@angular/animations';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
@@ -8,6 +9,17 @@ import { AddBusinessComponent } from '../agregar/add-business/add-business.compo
 
 @Component({
   selector: 'app-home',
+  animations: [
+    trigger('fadeInOut', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate('300ms', style({ opacity: 1 })),
+      ]),
+      transition(':leave', [
+        animate('300ms', style({ opacity: 0 }))
+      ])
+    ]),
+  ],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })

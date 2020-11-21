@@ -12,6 +12,7 @@ import { ViewModeDirective } from './directives/view-mode.directive';
 import { EditModeDirective } from './directives/edit-mode.directive';
 import { EditableComponent } from './components/editable/editable.component';
 import { EditableOnEnterDirective } from './directives/editable-on-enter.directive';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 
 @NgModule({
@@ -31,7 +32,8 @@ import { EditableOnEnterDirective } from './directives/editable-on-enter.directi
     AppMaterialModule,
     ReactiveFormsModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    FlexLayoutModule
   ],
   entryComponents: [AddBusinessComponent],
   providers: [],
