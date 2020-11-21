@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Business, BusinessSubType } from '../models/businesses';
+import { Business, BusinessSubType, BusinessType } from '../models/businesses';
 @Injectable({
   providedIn: 'root'
 })
@@ -13,6 +13,9 @@ export class BusinessService {
 
   getBusinesses(): Observable<Business[]> {
     return this.http.get<Business[]>(`${this.url}/businesses/`);
+  }
+  getBusinessTypes(): Observable<BusinessType[]> {
+    return this.http.get<BusinessType[]>(`${this.url}/business-types/`);
   }
   getBusiness(business: Business): Observable<Business> {
     return this.http.get<Business>(`${this.url}/businesses/${business.id}`, );

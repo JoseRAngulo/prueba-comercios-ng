@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialogRef, MatDialogConfig, MatDialog } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BusinessService } from 'src/app/services/business.service';
-import { Business, BusinessSubType } from 'src/app/models/businesses';
+import { Business, BusinessSubType, BusinessType } from 'src/app/models/businesses';
 @Component({
   selector: 'app-add-business',
   templateUrl: './add-business.component.html',
@@ -11,6 +11,7 @@ import { Business, BusinessSubType } from 'src/app/models/businesses';
 export class AddBusinessComponent implements OnInit {
   business: Business;
   subtypes: BusinessSubType[];
+  types: BusinessType[];
   groupedSubtypes: BusinessSubType[][];
   businessForm: FormGroup;
   constructor(
@@ -47,8 +48,16 @@ export class AddBusinessComponent implements OnInit {
     this.businessService.getSubtypes()
       .subscribe(subtypes => {
         this.subtypes = subtypes;
+        this.getTypes();
         this.groupedSubtypes = this.groupByType(this.subtypes);
+        console.log(this.groupedSubtypes);
       });
+  }
+  getTypes(): void {
+    this.businessService.getBusinessTypes()
+        .subscribe(types => {
+          this.types = types;
+        });
   }
 
   addBusiness(): void {
@@ -72,5 +81,14 @@ export class AddBusinessComponent implements OnInit {
       arrayed.push(grouped[key]);
     });
     return arrayed;
+  }
+
+  addOther(type: string, selected: boolean): void {
+    console.log(this.typeToId(type));
+    console.log(selected);
+  }
+
+  typeToId(type: string): number {
+    return this.types.find(t => t.name === type).id;
   }
 }

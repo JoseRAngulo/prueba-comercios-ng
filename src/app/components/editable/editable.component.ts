@@ -32,7 +32,6 @@ export class EditableComponent implements OnInit {
   }
 
   private get element() {
-    console.log(this.host.nativeElement);
     return this.host.nativeElement;
   }
 
