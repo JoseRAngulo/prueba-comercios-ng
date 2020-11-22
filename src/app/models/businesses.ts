@@ -6,7 +6,10 @@ export interface Business {
     address: string;
     types: number[];
 }
-
+export interface BusinessType {
+    id: number;
+    name: string;
+}
 export interface BusinessSubType {
     id: number;
     description: string;

@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef, MatDialogConfig, MatDialog } from '@angular/material/dialog';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BusinessService } from 'src/app/services/business.service';
 import { Business, BusinessSubType, BusinessType } from 'src/app/models/businesses';
+import { concat, forkJoin, Observable } from 'rxjs';
+import { last } from 'rxjs/operators';
 @Component({
   selector: 'app-add-business',
   templateUrl: './add-business.component.html',
@@ -14,6 +16,8 @@ export class AddBusinessComponent implements OnInit {
   types: BusinessType[];
   groupedSubtypes: BusinessSubType[][];
   businessForm: FormGroup;
+  selectedOthers: number[] = [];
+  newSubtypes = this.fb.group({});
   constructor(
     private businessService: BusinessService,
     private fb: FormBuilder,
@@ -30,6 +34,7 @@ export class AddBusinessComponent implements OnInit {
       address: ['', Validators.required],
       types: ['', Validators.required]
     });
+    this.newSubtypes.valueChanges.subscribe(e => console.log(e));
   }
 
   onSubmit(): void {
@@ -61,12 +66,41 @@ export class AddBusinessComponent implements OnInit {
   }
 
   addBusiness(): void {
-    console.log(this.business);
-    this.businessService.addBusiness(this.business)
-      .subscribe(b => {
-        this.business.id = b.id;
-        this.dialogRef.close({ added: this.business });
+    const addSubtypes: Observable<BusinessSubType>[] = [];
+    if (this.selectedOthers.length > 0) {
+      Object.keys(this.newSubtypes.controls).forEach(key => {
+        const subtype: BusinessSubType =  {
+          id: 0,
+          description: this.newSubtypes.controls[key].value,
+          type: +key
+        };
+        addSubtypes.push(this.businessService.addSubtype(subtype));
+        console.log(addSubtypes);
       });
+      forkJoin(addSubtypes)
+        .subscribe(subtypes => {
+          console.log(this.business);
+          console.log(subtypes.map(st => st.id));
+          if (this.business.types.includes(undefined)) {
+            this.business.types = subtypes.map(st => st.id);
+          } else {
+            this.business.types.concat(subtypes.map(st => st.id));
+          }
+          console.log(this.business);
+          this.businessService.addBusiness(this.business)
+            .subscribe(b => {
+              this.business.id = b.id;
+              this.dialogRef.close({ added: this.business });
+            });
+        });
+    } else {
+      console.log(this.business);
+      this.businessService.addBusiness(this.business)
+        .subscribe(b => {
+          this.business.id = b.id;
+          this.dialogRef.close({ added: this.business });
+        });
+    }
   }
 
   groupByType(data: BusinessSubType[]): BusinessSubType[][] {
@@ -84,11 +118,23 @@ export class AddBusinessComponent implements OnInit {
   }
 
   addOther(type: string, selected: boolean): void {
-    console.log(this.typeToId(type));
-    console.log(selected);
+    if (selected) {
+      this.selectedOthers.push(this.typeToId(type));
+      const control = this.fb.control('', [Validators.required]);
+      this.newSubtypes.addControl(`${this.typeToId(type)}`, control);
+    } else {
+      this.selectedOthers = this.selectedOthers.filter(v => v !== this.typeToId(type));
+      this.newSubtypes.removeControl(`${this.typeToId(type)}`);
+    }
+    console.log(this.selectedOthers);
+    console.log(this.newSubtypes);
   }
 
   typeToId(type: string): number {
     return this.types.find(t => t.name === type).id;
+  }
+
+  idToType(id: number): string {
+    return this.types.find(t => t.id === id).name;
   }
 }

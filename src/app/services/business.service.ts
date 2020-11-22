@@ -32,4 +32,7 @@ export class BusinessService {
   getSubtypes(): Observable<BusinessSubType[]> {
     return this.http.get<BusinessSubType[]>(`${this.url}/business-subtypes/`);
   }
+  addSubtype(subtype: BusinessSubType): Observable<BusinessSubType> {
+    return this.http.post<BusinessSubType>(`${this.url}/business-subtypes/`, subtype);
+  }
 }

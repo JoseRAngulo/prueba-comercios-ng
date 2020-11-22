@@ -33,7 +33,15 @@
                 
             </mat-select>
         </mat-form-field>
-
+    <ng-container *ngIf="newSubtypes !== fb.group({})">
+        <ng-container [formGroup]="newSubtypes">
+            <mat-form-field *ngFor="let other of selectedOthers">
+                <mat-label>Seleccionaste <i>otro...</i> en {{idToType(other)}}</mat-label>
+                <input formControlName="{{other}}" matInput type="text" />
+            </mat-form-field>
+        </ng-container>
+    </ng-container>
+    
     </mat-dialog-content>
     <mat-dialog-actions>
         <button mat-button type="submit">Guardar</button>
