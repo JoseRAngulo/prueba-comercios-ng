@@ -49,18 +49,22 @@ export class HomeComponent implements OnInit {
         this.businesses = businesses;
         console.log(this.businesses);
         this.dataSource = new MatTableDataSource(this.businesses);
-        const formGroups = this.businesses.map(business => {
-          return this.fb.group({
-            name: [business.name, Validators.required],
-            date: [business.date, Validators.required],
-            owner_name: [business.owner_name, Validators.required],
-            address: [business.address, Validators.required],
-            types: [business.types, Validators.required]
-          });
-        });
-        this.controls = this.fb.array(formGroups);
+        this.initControls();
         this.getSubtypes();
       });
+  }
+
+  private initControls() {
+    const formGroups = this.businesses.map(business => {
+      return this.fb.group({
+        name: [business.name, Validators.required],
+        date: [business.date, Validators.required],
+        owner_name: [business.owner_name, Validators.required],
+        address: [business.address, Validators.required],
+        types: [business.types, Validators.required]
+      });
+    });
+    this.controls = this.fb.array(formGroups);
   }
 
   getSubtypes(): void {
@@ -98,6 +102,7 @@ export class HomeComponent implements OnInit {
           this.businesses.push(response.added);
           this.dataSource = new MatTableDataSource(this.businesses);
           this.getSubtypes();
+          this.initControls();
           this.matTable.renderRows();
         }
       });
@@ -120,7 +125,8 @@ export class HomeComponent implements OnInit {
       this.businesses = this.businesses.map((e, i) => {
         if (index === i) {
           e[field] = control.value;
-          if (field === 'date') {
+          if (field === 'date' && typeof control.value !== 'string') {
+            console.log(typeof control.value);
             e[field] = control.value.toISOString().split('T')[0];
           }
           this.businessService.editBusiness(e).subscribe();

@@ -28,9 +28,22 @@ export class AddBusinessComponent implements OnInit {
   ngOnInit() {
     this.getSubtypes();
     this.businessForm = this.fb.group({
-      name: ['', Validators.required],
+      name: [
+        '',
+        [
+          Validators.required,
+          Validators.maxLength(50),
+        ]
+      ],
       date: ['', Validators.required],
-      ownerName: ['', Validators.required],
+      ownerName: [
+        '',
+        [
+          Validators.required,
+          Validators.maxLength(50),
+          Validators.pattern('^[a-zA-Z ]*$')
+        ]
+      ],
       address: ['', Validators.required],
       types: ['', Validators.required]
     });
