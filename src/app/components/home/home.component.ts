@@ -4,6 +4,7 @@ import { FormArray, FormBuilder, FormControl, Validators } from '@angular/forms'
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { Business, BusinessSubType } from 'src/app/models/businesses';
+import { AlertService } from 'src/app/services/alert.service';
 import { BusinessService } from 'src/app/services/business.service';
 import { AddBusinessComponent } from '../agregar/add-business/add-business.component';
 
@@ -32,11 +33,13 @@ export class HomeComponent implements OnInit {
   subtypes: BusinessSubType[];
   groupedSubtypes: BusinessSubType[][];
   subtypeStrings: { [id: number]: string; } = {};
+  maxDate =  new Date(new Date().setDate(new Date().getDate() - 1));
 
   constructor(
     private businessService: BusinessService,
     private businessDialog: MatDialog,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private alertService: AlertService
   ) { }
 
   ngOnInit() {
@@ -99,6 +102,7 @@ export class HomeComponent implements OnInit {
     businessRef.afterClosed()
       .subscribe(response => {
         if (response && response.added) {
+          this.alertService.success('Comercio agregado satisfactoriamente');
           this.businesses.push(response.added);
           this.dataSource = new MatTableDataSource(this.businesses);
           this.getSubtypes();
@@ -112,7 +116,11 @@ export class HomeComponent implements OnInit {
     this.businesses = this.businesses.filter(b => b.id !== id);
     this.dataSource = new MatTableDataSource(this.businesses);
     this.matTable.renderRows();
-    this.businessService.deleteBusiness(id).subscribe();
+    this.businessService.deleteBusiness(id).subscribe(() => {
+      this.alertService.success('Comercio borrado satisfactoriamente');
+    }, (error) => {
+      this.alertService.error('Error a borrar comercio');
+    });
   }
 
   getControl(index: number, field: string): FormControl {
@@ -129,7 +137,11 @@ export class HomeComponent implements OnInit {
             console.log(typeof control.value);
             e[field] = control.value.toISOString().split('T')[0];
           }
-          this.businessService.editBusiness(e).subscribe();
+          this.businessService.editBusiness(e).subscribe(() => {
+            this.alertService.success(`Campo editado existosamente`);
+          }, (error) => {
+            this.alertService.error(`Error al editar campo: ${field}`);
+          });
           return e;
         }
         return e;

@@ -5,6 +5,7 @@ import { BusinessService } from 'src/app/services/business.service';
 import { Business, BusinessSubType, BusinessType } from 'src/app/models/businesses';
 import { concat, forkJoin, Observable } from 'rxjs';
 import { last } from 'rxjs/operators';
+import { AlertService } from 'src/app/services/alert.service';
 @Component({
   selector: 'app-add-business',
   templateUrl: './add-business.component.html',
@@ -18,10 +19,12 @@ export class AddBusinessComponent implements OnInit {
   businessForm: FormGroup;
   selectedOthers: number[] = [];
   newSubtypes = this.fb.group({});
+  maxDate =  new Date(new Date().setDate(new Date().getDate() - 1));
   constructor(
     private businessService: BusinessService,
     private fb: FormBuilder,
     private businessDialog: MatDialog,
+    private alertService: AlertService,
     public dialogRef: MatDialogRef<AddBusinessComponent>
   ) { }
 
@@ -103,7 +106,11 @@ export class AddBusinessComponent implements OnInit {
           this.businessService.addBusiness(this.business)
             .subscribe(b => {
               this.business.id = b.id;
+              this.alertService.success('Comercio guardado satisfactoriamente');
               this.dialogRef.close({ added: this.business });
+            },
+            (error) => {
+              this.alertService.error('Error al guardar el comercio');
             });
         });
     } else {

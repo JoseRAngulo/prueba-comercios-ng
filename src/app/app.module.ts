@@ -13,6 +13,7 @@ import { EditModeDirective } from './directives/edit-mode.directive';
 import { EditableComponent } from './components/editable/editable.component';
 import { EditableOnEnterDirective } from './directives/editable-on-enter.directive';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { AlertComponent } from './components/alert/alert.component';
 
 
 @NgModule({
@@ -24,6 +25,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     EditModeDirective,
     EditableComponent,
     EditableOnEnterDirective,
+    AlertComponent,
   ],
   imports: [
     BrowserModule,
