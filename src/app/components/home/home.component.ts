@@ -60,9 +60,16 @@ export class HomeComponent implements OnInit {
   private initControls() {
     const formGroups = this.businesses.map(business => {
       return this.fb.group({
-        name: [business.name, Validators.required],
+        name: [business.name, [
+          Validators.required,
+          Validators.maxLength(50),
+        ]],
         date: [business.date, Validators.required],
-        owner_name: [business.owner_name, Validators.required],
+        owner_name: [business.owner_name, [
+          Validators.required,
+          Validators.maxLength(50),
+          Validators.pattern('^[a-zA-Z ]*$')
+        ]],
         address: [business.address, Validators.required],
         types: [business.types, Validators.required]
       });
